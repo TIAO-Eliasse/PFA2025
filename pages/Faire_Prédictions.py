@@ -1401,30 +1401,57 @@ def afficher_tableau_de_bord(base, geo):
 
 
 
+import requests
+import joblib
+import pickle
+import os
+import streamlit as st
 
-# --- Fichiers à charger ---
-RSF_MODEL_FILE = "Models//rsf_model.joblib1"
-SEUILS_FILE = "Models//seuils_region_temps_match_taux.pkl"
-MAPPINGS_FILE = "Models//category_mappings.joblib1"
+# --- Fichiers et IDs Drive à charger ---
+FILES_INFO = {
+    "RSF_MODEL_FILE": {
+        "path": "Models/rsf_model.joblib",
+        "drive_id": "1_-urCD8kKJk5q2OTXl0pGAlbB5hDeDjJ"  # Ton vrai ID Drive ici
+    },
+    "SEUILS_FILE": {
+        "path": "Models/seuils_region_temps_match_taux.pkl",
+        "drive_id": "TON_ID_SEUILS"  # à remplacer
+    },
+    "MAPPINGS_FILE": {
+        "path": "Models/category_mappings.joblib",
+        "drive_id": "TON_ID_MAPPINGS"  # à remplacer
+    }
+}
+
+# --- Fonction de téléchargement depuis Google Drive ---
+def download_file_from_drive(file_id, destination_path):
+    url = f"https://drive.google.com/uc?export=download&id={file_id}"
+    response = requests.get(url)
+    if response.status_code == 200:
+        os.makedirs(os.path.dirname(destination_path), exist_ok=True)
+        with open(destination_path, "wb") as f:
+            f.write(response.content)
+        print(f"✅ Fichier téléchargé : {destination_path}")
+    else:
+        st.error(f"❌ Échec téléchargement : {destination_path}")
+        st.stop()
 
 # --- Chargement des ressources ---
 @st.cache_resource
 def load_resources():
-    if not os.path.exists(RSF_MODEL_FILE):
-        st.error(f"Fichier modèle introuvable : {RSF_MODEL_FILE}")
-        st.stop()
-    if not os.path.exists(SEUILS_FILE):
-        st.error(f"Fichier seuils introuvable : {SEUILS_FILE}")
-        st.stop()
-    if not os.path.exists(MAPPINGS_FILE):
-        st.error(f"Fichier mappings introuvable : {MAPPINGS_FILE}")
-        st.stop()
+    # Vérifie et télécharge si nécessaire
+    for file_info in FILES_INFO.values():
+        if not os.path.exists(file_info["path"]):
+            download_file_from_drive(file_info["drive_id"], file_info["path"])
 
-    model = joblib.load(RSF_MODEL_FILE)
-    with open(SEUILS_FILE, "rb") as f:
+    # Charge les ressources
+    model = joblib.load(FILES_INFO["RSF_MODEL_FILE"]["path"])
+    with open(FILES_INFO["SEUILS_FILE"]["path"], "rb") as f:
         seuils = pickle.load(f)
-    mappings = joblib.load(MAPPINGS_FILE)
+    mappings = joblib.load(FILES_INFO["MAPPINGS_FILE"]["path"])
+
     return model, seuils, mappings
+
 
 rsf_model, seuils_dict, category_mappings = load_resources()
 
