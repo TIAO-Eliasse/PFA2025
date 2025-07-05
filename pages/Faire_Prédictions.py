@@ -1410,7 +1410,7 @@ def afficher_tableau_de_bord(base, geo):
 # --- Fichiers et IDs Drive à charger ---
 FILES_INFO = {
     "RSF_MODEL_FILE": {
-        "path": "Models/rsf_model.joblib",
+        "path": "Models/rsf_model.joblib1",
         "drive_id": "1_-urCD8kKJk5q2OTXl0pGAlbB5hDeDjJ"  # Ton vrai ID Drive ici
     },
     "SEUILS_FILE": {
@@ -1418,7 +1418,7 @@ FILES_INFO = {
         "drive_id": "TON_ID_SEUILS"  # à remplacer
     },
     "MAPPINGS_FILE": {
-        "path": "Models/category_mappings.joblib",
+        "path": "Models/category_mappings.joblib1",
         "drive_id": "TON_ID_MAPPINGS"  # à remplacer
     }
 }
