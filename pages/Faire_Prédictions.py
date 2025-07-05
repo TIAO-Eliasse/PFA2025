@@ -9,7 +9,11 @@ import io
 import plotly.express as px
 import plotly.graph_objects as go
                 
-              
+import requests
+import joblib
+import pickle
+import os
+import streamlit as st        
                 
 import pickle
 import json
@@ -1401,11 +1405,7 @@ def afficher_tableau_de_bord(base, geo):
 
 
 
-import requests
-import joblib
-import pickle
-import os
-import streamlit as st
+
 
 # --- Fichiers et IDs Drive à charger ---
 FILES_INFO = {
