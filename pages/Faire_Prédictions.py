@@ -1405,7 +1405,6 @@ def afficher_tableau_de_bord(base, geo):
 
 
 
-
 import os
 import joblib
 import pickle
@@ -1415,22 +1414,20 @@ import gdown
 # --- Fichiers et IDs Drive à charger ---
 FILES_INFO = {
     "RSF_MODEL_FILE": {
-        "path": "Models/rsf_model.joblib",
+        "path": "rsf_model.joblib",  # modèle lourd à la racine, à télécharger
         "drive_id": "1_-urCD8kKJk5q2OTXl0pGAlbB5hDeDjJ"
-    },
-    "SEUILS_FILE": {
-        "path": "Models/seuils_region_temps_match_taux.pkl",
-        "drive_id": "TON_ID_SEUILS"  # à remplacer par l’ID réel
-    },
-    "MAPPINGS_FILE": {
-        "path": "Models/category_mappings.joblib",
-        "drive_id": "TON_ID_MAPPINGS"  # à remplacer par l’ID réel
     }
 }
 
+# --- Chemins des fichiers déjà dans GitHub ---
+SEUILS_FILE_PATH = "Models/seuils_region_temps_match_taux.pkl"
+MAPPINGS_FILE_PATH = "Models/category_mappings.joblib"
+
 # --- Fonction de téléchargement depuis Google Drive via gdown ---
 def download_file_from_drive(file_id, destination_path):
-    os.makedirs(os.path.dirname(destination_path), exist_ok=True)
+    dir_name = os.path.dirname(destination_path)
+    if dir_name and not os.path.exists(dir_name):
+        os.makedirs(dir_name)
     url = f"https://drive.google.com/uc?id={file_id}"
     gdown.download(url, destination_path, quiet=False)
     print(f"✅ Fichier téléchargé : {destination_path}")
@@ -1438,16 +1435,17 @@ def download_file_from_drive(file_id, destination_path):
 # --- Chargement des ressources ---
 @st.cache_resource
 def load_resources():
-    # Vérifie et télécharge si nécessaire
-    for file_info in FILES_INFO.values():
-        if not os.path.exists(file_info["path"]):
-            download_file_from_drive(file_info["drive_id"], file_info["path"])
+    # Télécharger modèle lourd uniquement s'il n'existe pas
+    if not os.path.exists(FILES_INFO["RSF_MODEL_FILE"]["path"]):
+        download_file_from_drive(FILES_INFO["RSF_MODEL_FILE"]["drive_id"], FILES_INFO["RSF_MODEL_FILE"]["path"])
 
-    # Charge les ressources
+    # Charger le modèle
     model = joblib.load(FILES_INFO["RSF_MODEL_FILE"]["path"])
-    with open(FILES_INFO["SEUILS_FILE"]["path"], "rb") as f:
+
+    # Charger seuils et mappings depuis le repo GitHub (local)
+    with open(SEUILS_FILE_PATH, "rb") as f:
         seuils = pickle.load(f)
-    mappings = joblib.load(FILES_INFO["MAPPINGS_FILE"]["path"])
+    mappings = joblib.load(MAPPINGS_FILE_PATH)
 
     return model, seuils, mappings
 
