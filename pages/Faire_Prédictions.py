@@ -38,6 +38,12 @@ if "acces_autorise" not in st.session_state or not st.session_state["acces_autor
 
 st.set_page_config(page_title="résultats Predictions", layout="wide")
 
+import sys
+import joblib
+import streamlit as st
+
+st.write(f"Python : {sys.version}")
+st.write(f"Joblib : {joblib.__version__}")
 
 # --- Configuration page ---
 
