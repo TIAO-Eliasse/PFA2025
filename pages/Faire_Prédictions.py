@@ -1406,35 +1406,34 @@ def afficher_tableau_de_bord(base, geo):
 
 
 
+import os
+import joblib
+import pickle
+import streamlit as st
+import gdown
 
 # --- Fichiers et IDs Drive à charger ---
 FILES_INFO = {
     "RSF_MODEL_FILE": {
-        "path": "Models/rsf_model.joblib1",
-        "drive_id": "1_-urCD8kKJk5q2OTXl0pGAlbB5hDeDjJ"  # Ton vrai ID Drive ici
+        "path": "Models/rsf_model.joblib",
+        "drive_id": "1_-urCD8kKJk5q2OTXl0pGAlbB5hDeDjJ"
     },
     "SEUILS_FILE": {
         "path": "Models/seuils_region_temps_match_taux.pkl",
-        "drive_id": "TON_ID_SEUILS"  # à remplacer
+        "drive_id": "TON_ID_SEUILS"  # à remplacer par l’ID réel
     },
     "MAPPINGS_FILE": {
-        "path": "Models/category_mappings.joblib1",
-        "drive_id": "TON_ID_MAPPINGS"  # à remplacer
+        "path": "Models/category_mappings.joblib",
+        "drive_id": "TON_ID_MAPPINGS"  # à remplacer par l’ID réel
     }
 }
 
-# --- Fonction de téléchargement depuis Google Drive ---
+# --- Fonction de téléchargement depuis Google Drive via gdown ---
 def download_file_from_drive(file_id, destination_path):
-    url = f"https://drive.google.com/uc?export=download&id={file_id}"
-    response = requests.get(url)
-    if response.status_code == 200:
-        os.makedirs(os.path.dirname(destination_path), exist_ok=True)
-        with open(destination_path, "wb") as f:
-            f.write(response.content)
-        print(f"✅ Fichier téléchargé : {destination_path}")
-    else:
-        st.error(f"❌ Échec téléchargement : {destination_path}")
-        st.stop()
+    os.makedirs(os.path.dirname(destination_path), exist_ok=True)
+    url = f"https://drive.google.com/uc?id={file_id}"
+    gdown.download(url, destination_path, quiet=False)
+    print(f"✅ Fichier téléchargé : {destination_path}")
 
 # --- Chargement des ressources ---
 @st.cache_resource
@@ -1452,8 +1451,9 @@ def load_resources():
 
     return model, seuils, mappings
 
-
+# Appel de la fonction pour charger les ressources
 rsf_model, seuils_dict, category_mappings = load_resources()
+
 
 # --- Colonnes du modèle ---
 CATEGORICAL_COLS = [
