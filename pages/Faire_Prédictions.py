@@ -6,21 +6,22 @@ from sksurv.functions import StepFunction
 import plotly.express as px
 import os
 import io
-import plotly.express as px
+
 import plotly.graph_objects as go
                 
-import requests
-import joblib
+
 import pickle
 import os
 import streamlit as st        
-                
+
+import zipfile
+
+import streamlit as st           
 import pickle
 import json
 
-   
-import json
-import plotly.graph_objects as go
+
+
 
 import folium
 import plotly.express as px
@@ -1405,52 +1406,46 @@ def afficher_tableau_de_bord(base, geo):
 
 
 
-import os
-import joblib
-import pickle
-import streamlit as st
-import gdown
 
-# --- Fichiers et IDs Drive à charger ---
-FILES_INFO = {
-    "RSF_MODEL_FILE": {
-        "path": "rsf_model.joblib",  # modèle lourd à la racine, à télécharger
-        "drive_id": "1_-urCD8kKJk5q2OTXl0pGAlbB5hDeDjJ"
-    }
-}
+# --- Fichiers à charger ---
+RSF_MODEL_ZIP_FILE = "Models/rsf_model.zip"
+RSF_MODEL_FILE = "Models/rsf_model.joblib"  # le fichier extrait du zip
+SEUILS_FILE = "Models/seuils_region_temps_match_taux.pkl"
+MAPPINGS_FILE = "Models/category_mappings.joblib"
 
-# --- Chemins des fichiers déjà dans GitHub ---
-SEUILS_FILE_PATH = "Models/seuils_region_temps_match_taux.pkl"
-MAPPINGS_FILE_PATH = "Models/category_mappings.joblib"
-
-# --- Fonction de téléchargement depuis Google Drive via gdown ---
-def download_file_from_drive(file_id, destination_path):
-    dir_name = os.path.dirname(destination_path)
-    if dir_name and not os.path.exists(dir_name):
-        os.makedirs(dir_name)
-    url = f"https://drive.google.com/uc?id={file_id}"
-    gdown.download(url, destination_path, quiet=False)
-    print(f"✅ Fichier téléchargé : {destination_path}")
+# --- Fonction pour dézipper le modèle ---
+def unzip_model_if_needed():
+    if not os.path.exists(RSF_MODEL_FILE):
+        if not os.path.exists(RSF_MODEL_ZIP_FILE):
+            st.error(f"Fichier ZIP modèle introuvable : {RSF_MODEL_ZIP_FILE}")
+            st.stop()
+        with zipfile.ZipFile(RSF_MODEL_ZIP_FILE, 'r') as zip_ref:
+            zip_ref.extractall(os.path.dirname(RSF_MODEL_ZIP_FILE))
+        st.write(f"✅ Modèle décompressé : {RSF_MODEL_FILE}")
 
 # --- Chargement des ressources ---
 @st.cache_resource
 def load_resources():
-    # Télécharger modèle lourd uniquement s'il n'existe pas
-    if not os.path.exists(FILES_INFO["RSF_MODEL_FILE"]["path"]):
-        download_file_from_drive(FILES_INFO["RSF_MODEL_FILE"]["drive_id"], FILES_INFO["RSF_MODEL_FILE"]["path"])
+    unzip_model_if_needed()
 
-    # Charger le modèle
-    model = joblib.load(FILES_INFO["RSF_MODEL_FILE"]["path"])
+    if not os.path.exists(RSF_MODEL_FILE):
+        st.error(f"Fichier modèle introuvable après décompression : {RSF_MODEL_FILE}")
+        st.stop()
+    if not os.path.exists(SEUILS_FILE):
+        st.error(f"Fichier seuils introuvable : {SEUILS_FILE}")
+        st.stop()
+    if not os.path.exists(MAPPINGS_FILE):
+        st.error(f"Fichier mappings introuvable : {MAPPINGS_FILE}")
+        st.stop()
 
-    # Charger seuils et mappings depuis le repo GitHub (local)
-    with open(SEUILS_FILE_PATH, "rb") as f:
+    model = joblib.load(RSF_MODEL_FILE)
+    with open(SEUILS_FILE, "rb") as f:
         seuils = pickle.load(f)
-    mappings = joblib.load(MAPPINGS_FILE_PATH)
-
+    mappings = joblib.load(MAPPINGS_FILE)
     return model, seuils, mappings
 
-# Appel de la fonction pour charger les ressources
 rsf_model, seuils_dict, category_mappings = load_resources()
+
 
 
 # --- Colonnes du modèle ---
