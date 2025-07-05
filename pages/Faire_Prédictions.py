@@ -1413,45 +1413,66 @@ def afficher_tableau_de_bord(base, geo):
 
 
 
-# --- Fichiers à charger ---
+import os
+import zipfile
+import streamlit as st
+import joblib
+import pickle
+
+# --- Fichiers ---
 RSF_MODEL_ZIP_FILE = "Models/rsf_model.zip"
-RSF_MODEL_FILE = "Models/rsf_model.joblib"  # le fichier extrait du zip
+RSF_MODEL_FILE = "Models/rsf_model.joblib"  # Nom attendu après extraction, à ajuster si besoin
 SEUILS_FILE = "Models/seuils_region_temps_match_taux.pkl"
 MAPPINGS_FILE = "Models/category_mappings.joblib"
 
-# --- Fonction pour dézipper le modèle ---
 def unzip_model_if_needed():
     if not os.path.exists(RSF_MODEL_FILE):
         if not os.path.exists(RSF_MODEL_ZIP_FILE):
             st.error(f"Fichier ZIP modèle introuvable : {RSF_MODEL_ZIP_FILE}")
             st.stop()
-        with zipfile.ZipFile(RSF_MODEL_ZIP_FILE, 'r') as zip_ref:
-            zip_ref.extractall(os.path.dirname(RSF_MODEL_ZIP_FILE))
-        st.write(f"✅ Modèle décompressé : {RSF_MODEL_FILE}")
+        try:
+            with zipfile.ZipFile(RSF_MODEL_ZIP_FILE, 'r') as zip_ref:
+                st.write("Liste des fichiers dans le zip :")
+                for f in zip_ref.namelist():
+                    st.write(f" - {f}")
+                zip_ref.extractall(os.path.dirname(RSF_MODEL_ZIP_FILE))
+            st.success(f"✅ Modèle décompressé : {RSF_MODEL_FILE}")
+        except Exception as e:
+            st.error(f"Erreur lors de la décompression du modèle : {e}")
+            st.stop()
 
-# --- Chargement des ressources ---
 @st.cache_resource
 def load_resources():
     unzip_model_if_needed()
 
-    if not os.path.exists(RSF_MODEL_FILE):
-        st.error(f"Fichier modèle introuvable après décompression : {RSF_MODEL_FILE}")
-        st.stop()
-    if not os.path.exists(SEUILS_FILE):
-        st.error(f"Fichier seuils introuvable : {SEUILS_FILE}")
-        st.stop()
-    if not os.path.exists(MAPPINGS_FILE):
-        st.error(f"Fichier mappings introuvable : {MAPPINGS_FILE}")
+    # Charger le modèle RSF
+    try:
+        model = joblib.load(RSF_MODEL_FILE)
+        st.success("✅ Modèle RSF chargé avec succès.")
+    except Exception as e:
+        st.error(f"Erreur lors du chargement du modèle RSF : {e}")
         st.stop()
 
-    model = joblib.load(RSF_MODEL_FILE)
-    with open(SEUILS_FILE, "rb") as f:
-        seuils = pickle.load(f)
-    mappings = joblib.load(MAPPINGS_FILE)
+    # Charger les seuils
+    try:
+        with open(SEUILS_FILE, "rb") as f:
+            seuils = pickle.load(f)
+        st.success("✅ Seuils chargés avec succès.")
+    except Exception as e:
+        st.error(f"Erreur lors du chargement des seuils : {e}")
+        st.stop()
+
+    # Charger les mappings
+    try:
+        mappings = joblib.load(MAPPINGS_FILE)
+        st.success("✅ Mappings chargés avec succès.")
+    except Exception as e:
+        st.error(f"Erreur lors du chargement des mappings : {e}")
+        st.stop()
+
     return model, seuils, mappings
 
 rsf_model, seuils_dict, category_mappings = load_resources()
-
 
 
 # --- Colonnes du modèle ---
