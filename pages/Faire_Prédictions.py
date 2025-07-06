@@ -1435,7 +1435,7 @@ def unzip_model_if_needed():
                 for f in zip_ref.namelist():
                     st.write(f" - {f}")
                 zip_ref.extractall(os.path.dirname(RSF_MODEL_ZIP_FILE))
-            st.success(f"✅ Modèle décompressé : {RSF_MODEL_FILE}")
+            #st.success(f"✅ Modèle décompressé : {RSF_MODEL_FILE}")
         except Exception as e:
             st.error(f"Erreur lors de la décompression du modèle : {e}")
             st.stop()
@@ -1447,7 +1447,7 @@ def load_resources():
     # Charger le modèle RSF
     try:
         model = joblib.load(RSF_MODEL_FILE)
-        st.success("✅ Modèle RSF chargé avec succès.")
+        #st.success("✅ Modèle RSF chargé avec succès.")
     except Exception as e:
         st.error(f"Erreur lors du chargement du modèle RSF : {e}")
         st.stop()
@@ -1456,7 +1456,7 @@ def load_resources():
     try:
         with open(SEUILS_FILE, "rb") as f:
             seuils = pickle.load(f)
-        st.success("✅ Seuils chargés avec succès.")
+        #st.success("✅ Seuils chargés avec succès.")
     except Exception as e:
         st.error(f"Erreur lors du chargement des seuils : {e}")
         st.stop()
@@ -1464,7 +1464,7 @@ def load_resources():
     # Charger les mappings
     try:
         mappings = joblib.load(MAPPINGS_FILE)
-        st.success("✅ Mappings chargés avec succès.")
+       # st.success("✅ Mappings chargés avec succès.")
     except Exception as e:
         st.error(f"Erreur lors du chargement des mappings : {e}")
         st.stop()
@@ -1596,7 +1596,7 @@ def ajuster_seuil(row, t):
 mode = st.radio("📝 Voulez-vous prédire pour :", ["Plusieurs entreprises (via fichier)", "Une entreprise (via formulaire)"])
 
 # --- Sélection de l'horizon de prédiction ---
-t = st.slider("⏳ Horizon de prédiction (années)", min_value=1, max_value=7, value=5)
+t = st.slider("⏳Veuillez choisir l'Horizon de prédiction (années)", min_value=1, max_value=7, value=5)
 
 # --- Mode fichier ---
 if mode == "Plusieurs entreprises (via fichier)":
