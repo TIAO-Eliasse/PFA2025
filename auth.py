@@ -22,7 +22,7 @@ def verifier_connexion():
         if st.button("Se connecter"):
             if username == "PME_SUIVI" and password == "2025":
                 st.session_state["acces_autorise"] = True
-                st.experimental_rerun()  # Utilisation compatible avec les anciennes versions
+                st.rerun()  # Utilisation compatible avec les anciennes versions
             else:
                 st.error("❌ Identifiants incorrects.")
         st.stop()
@@ -33,4 +33,4 @@ def afficher_sidebar_deconnexion():
         st.success("✅ Connecté")
         if st.button("🚪 Se déconnecter"):
             st.session_state["acces_autorise"] = False
-            st.experimental_rerun()
+            st.rerun()
