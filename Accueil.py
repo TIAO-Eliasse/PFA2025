@@ -93,15 +93,15 @@ st.markdown("""
 # ... (tout ton bloc CSS personnalisé ici, inchangé)
 
     # --- Définition des couleurs et police ---
-    primary_color = "#D28E8E"
-    background_color = "#528D4E"
-    secondary_background_color = "#F0F2F6"
-    text_color = "#31333F"
-    font_family = "sans-serif" # Correspond à "Sans empattement"
+primary_color = "#D28E8E"
+background_color = "#528D4E"
+secondary_background_color = "#F0F2F6"
+text_color = "#31333F"
+font_family = "sans-serif" # Correspond à "Sans empattement"
 
 
     # --- Injection de CSS personnalisé ---
-    st.markdown(
+st.markdown(
         f"""
         <style>
         /* Général (corps de la page) */
