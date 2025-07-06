@@ -32,11 +32,13 @@ import pandas as pd
 import plotly.express as px
     #st.header("Suivi des PME - Carte Plotly avec labels fixes")
 
-if "acces_autorise" not in st.session_state or not st.session_state["acces_autorise"]:
-    st.error("🔒 Accès refusé. Veuillez d'abord vous connecter depuis la page d'accueil.")
-    st.stop()
-
+from auth import verifier_connexion, afficher_sidebar_deconnexion
 st.set_page_config(page_title="résultats Predictions", layout="wide")
+verifier_connexion()
+afficher_sidebar_deconnexion()
+
+
+
 
 import sys
 import joblib
