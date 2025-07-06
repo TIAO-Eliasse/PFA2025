@@ -1,4 +1,3 @@
-# auth.py
 import streamlit as st
 
 def verifier_connexion():
@@ -6,7 +5,7 @@ def verifier_connexion():
         st.session_state["acces_autorise"] = False
 
     if not st.session_state["acces_autorise"]:
-        # Appliquer les styles (masquer sidebar + header + footer)
+        # --- Masquer la sidebar, le header et le footer ---
         st.markdown("""
             <style>
                 [data-testid="stSidebar"], header, footer {
@@ -16,13 +15,15 @@ def verifier_connexion():
         """, unsafe_allow_html=True)
 
         st.title("🔒 Connexion requise")
+
         username = st.text_input("Nom d'utilisateur")
-        password = st.text_input("Code d'accès", type="password", key="login")
+        password = st.text_input("Code d'accès", type="password")
 
         if st.button("Se connecter"):
             if username == "PME_SUIVI" and password == "2025":
                 st.session_state["acces_autorise"] = True
-                st.rerun()  # Utilisation compatible avec les anciennes versions
+                st.success("Connexion réussie ✅")
+                st.stop()  # Stoppe ici et affiche le message
             else:
                 st.error("❌ Identifiants incorrects.")
         st.stop()
@@ -33,4 +34,5 @@ def afficher_sidebar_deconnexion():
         st.success("✅ Connecté")
         if st.button("🚪 Se déconnecter"):
             st.session_state["acces_autorise"] = False
-            st.rerun()
+            st.success("Vous avez été déconnecté.")
+            st.stop()
