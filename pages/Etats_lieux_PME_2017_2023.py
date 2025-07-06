@@ -14,15 +14,14 @@ import streamlit as st
 
 
 import streamlit as st
-
-# Bloquer l'accès si l'utilisateur n'est pas connecté
-if "acces_autorise" not in st.session_state or not st.session_state["acces_autorise"]:
-    st.error("🔒 Accès refusé. Veuillez d'abord vous connecter depuis la page d'accueil.")
-    st.stop()
-
-
-
+from auth import verifier_connexion, afficher_sidebar_deconnexion
 st.set_page_config(page_title="Suivi des PME", layout="wide")
+verifier_connexion()
+afficher_sidebar_deconnexion()
+
+
+
+
 
 
 
