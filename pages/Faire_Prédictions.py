@@ -42,8 +42,7 @@ import sys
 import joblib
 import streamlit as st
 
-st.write(f"Python : {sys.version}")
-st.write(f"Joblib : {joblib.__version__}")
+
 
 # --- Configuration page ---
 
