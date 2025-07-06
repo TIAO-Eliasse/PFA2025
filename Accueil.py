@@ -1,11 +1,13 @@
+
 import streamlit as st
 
-# === Étape 1 : Contrôle d'accès avant affichage ===
+# --- Initialisation de l'état de session ---
 if "acces_autorise" not in st.session_state:
     st.session_state["acces_autorise"] = False
 
+# --- Bloquer l'accès si non connecté ---
 if not st.session_state["acces_autorise"]:
-    # Masquer tout (sidebar, header, footer)
+    # Masquer la sidebar, le header et le footer
     st.markdown("""
         <style>
             [data-testid="stSidebar"], header, footer {visibility: hidden;}
@@ -23,85 +25,187 @@ if not st.session_state["acces_autorise"]:
             st.experimental_rerun()
         else:
             st.error("❌ Identifiants incorrects.")
+
+    st.stop()  # Arrêter ici pour ne pas exécuter le reste du code
+
+
+else:
+    st.title("📊 Bienvenue sur l'application PME Cameroun")
+
+
     
-    # Stoppe ici toute exécution s'il n'est pas connecté
-    st.stop()
+    
 
-# === Étape 2 : Code affiché après connexion ===
+    st.markdown("""
+        <style>
+            .centered {
+                text-align: center;
+                margin: 6px 0;
+                color: #003366;
+                font-weight: 600;
+            }
+            .title-section {
+                font-size: 20px;
+            }
+            .row-container {
+                display: flex;
+                justify-content: space-between;
+                margin-top: 20px;
+                padding-top: 10px;
+                border-top: 1px solid #ccc;
+            }
+            .row-item {
+                width: 48%;
+                font-size: 16px;
+                line-height: 1.4;
+            }
+        </style>
 
-# --- Bouton de déconnexion dans la sidebar ---
-with st.sidebar:
-    st.success("✅ Connecté en tant que PME_SUIVI")
-    if st.button("🚪 Se déconnecter"):
-        st.session_state["acces_autorise"] = False
-        st.experimental_rerun()
+        <h4 class="centered">🏛️ Institut National de la Statistique (INS) - Cameroun</h4>
+        
 
-# --- Titre principal ---
-st.title("📊 Bienvenue sur l'application PME Cameroun")
+        <hr style="margin:8px 0 18px 0;">
 
-# --- Contenu HTML personnalisé ---
-st.markdown("""
-    <style>
-        .centered {
+        <p class="centered" style="margin-top:12px;"><strong>Titre :</strong><br>
+        <em>Dispositif pour le suivi des PME au Cameroun</em></p>
+        <p class="centered">Auteur : <strong>TIAO Eliasse</strong></p>
+        <p class="centered">Date : <strong>2025</strong></p>
+
+        <p class="centered" style="margin-top:14px;"><strong>Stage :</strong> Du 19 Mars au 19 Juillet</p>
+
+        <p class="centered" style="margin-top:18px;"><strong>Mise en place par :</strong><br>
+        <strong>TIAO Eliasse</strong>, Élève Ingénieur Statisticien Economiste 3ème année</p>
+
+        <div class="row-container">
+            <div class="row-item">
+                <strong>Encadreur professionnel :</strong><br>
+                M. KONLACK LONLACK Giscard<br>
+                Chargé d’études assistant à l’INS
+            </div>
+            <div class="row-item" style="text-align:right;">
+                <strong>Encadreur académique :</strong><br>
+                M. CHASSEM TCHATCHUN Nacisse Palissy<br>
+                Enseignant associé à l’ISSEA
+            </div>
+        </div>
+    """, unsafe_allow_html=True)
+
+
+    st.markdown("""
+        <style>
+        /* Arrière-plan général */
+        .stApp {
+            background-color: #FFFFFF;
+            color: #333333;
+        }
+
+        /* Titre principal */
+        .main-title {
+            background-color: #003366;
+            color: white;
+            padding: 18px;
+            border-radius: 10px;
             text-align: center;
-            margin: 6px 0;
+            font-size: 28px;
+            margin-bottom: 25px;
+        }
+
+        /* Cartes et boîtes secondaires */
+        .card, .stMarkdown, .stDataFrame, .stTable {
+            background-color: #E6F0FA;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #B0C4DE;
+            margin-bottom: 20px;
+            color: #333333;
+        }
+
+        /* Titres et sous-titres */
+        h1, h2, h3, h4, h5, h6 {
             color: #003366;
-            font-weight: 600;
         }
-        .title-section {
-            font-size: 20px;
-        }
-        .row-container {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-            padding-top: 10px;
-            border-top: 1px solid #ccc;
-        }
-        .row-item {
-            width: 48%;
+
+        /* Boutons */
+        .stButton button {
+            background-color: #003366;
+            color: white;
+            border-radius: 8px;
+            padding: 12px 20px;
             font-size: 16px;
-            line-height: 1.4;
+            border: none;
         }
-    </style>
+        .stButton button:hover {
+            background-color: #005599;
+            color: #f0f0f0;
+        }
 
-    <h4 class="centered">🏛️ Institut National de la Statistique (INS) - Cameroun</h4>
-    <hr style="margin:8px 0 18px 0;">
-    <p class="centered"><strong>Titre :</strong><br>
-    <em>Dispositif pour le suivi des PME au Cameroun</em></p>
-    <p class="centered">Auteur : <strong>TIAO Eliasse</strong></p>
-    <p class="centered">Date : <strong>2025</strong></p>
-    <p class="centered"><strong>Stage :</strong> Du 19 Mars au 19 Juillet</p>
-    <p class="centered"><strong>Mise en place par :</strong><br>
-    <strong>TIAO Eliasse</strong>, Élève Ingénieur Statisticien Economiste 3ème année</p>
+        /* Inputs */
+        input, select, textarea {
+            background-color: #FFFFFF;
+            border: 2px solid #B0C4DE;
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 15px;
+            color: #333333;
+        }
+        input:focus, select:focus, textarea:focus {
+            border: 2px solid #003366;
+            background-color: #F8FBFF;
+            outline: none;
+        }
 
-    <div class="row-container">
-        <div class="row-item">
-            <strong>Encadreur professionnel :</strong><br>
-            M. KONLACK LONLACK Giscard<br>
-            Chargé d’études assistant à l’INS
-        </div>
-        <div class="row-item" style="text-align:right;">
-            <strong>Encadreur académique :</strong><br>
-            M. CHASSEM TCHATCHUN Nacisse Palissy<br>
-            Enseignant associé à l’ISSEA
-        </div>
-    </div>
-""", unsafe_allow_html=True)
+        /* Slider */
+        .stSlider > div {
+            background: #E6F0FA;
+            padding: 8px;
+            border-radius: 10px;
+            border: 1px solid #B0C4DE;
+        }
 
-# === Thème et design CSS ===
-# ... (tout ton bloc CSS personnalisé ici, inchangé)
+        /* Radio et checkbox */
+        .stRadio, .stCheckbox {
+            background-color: #E6F0FA;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #B0C4DE;
+        }
 
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #003366;
+            border-radius: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #E6F0FA;
+        }
+
+        /* Separator line */
+        hr {
+            border: 1px solid #003366;
+        }
+
+        /* Plotly Charts */
+        .modebar {
+            display: none !important;
+        }
+
+        </style>
+    """, unsafe_allow_html=True)
+
+    
     # --- Définition des couleurs et police ---
-primary_color = "#D28E8E"
-background_color = "#528D4E"
-secondary_background_color = "#F0F2F6"
-text_color = "#31333F"
-font_family = "sans-serif" # Correspond à "Sans empattement"
+    primary_color = "#D28E8E"
+    background_color = "#528D4E"
+    secondary_background_color = "#F0F2F6"
+    text_color = "#31333F"
+    font_family = "sans-serif" # Correspond à "Sans empattement"
 
 
     # --- Injection de CSS personnalisé ---
-st.markdown(
+    st.markdown(
         f"""
         <style>
         /* Général (corps de la page) */
