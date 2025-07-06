@@ -1421,7 +1421,7 @@ import pickle
 
 # --- Fichiers ---
 RSF_MODEL_ZIP_FILE = "Models/rsf_model.zip"
-RSF_MODEL_FILE = "rsf_model.joblib"  # Nom attendu après extraction, à ajuster si besoin
+RSF_MODEL_FILE = "Models/rsf_model.joblib"  # Nom attendu après extraction, à ajuster si besoin
 SEUILS_FILE = "Models/seuils_region_temps_match_taux.pkl"
 MAPPINGS_FILE = "Models/category_mappings.joblib"
 
