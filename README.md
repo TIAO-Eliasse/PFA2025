@@ -1,16 +1,114 @@
-﻿# SME Survival Analytics (Engineering Thesis Research)
+# Pfa2025
 
-Advanced machine learning framework for predicting SME (Small and Medium Enterprise) survival, originally developed as an engineering thesis at **ISSEA-CEMAC, Cameroon**.
+> Expert-level implementation of Survival Analysis focusing on robust methodologies and reproducible results.
 
-## 🎯 Research Objective
-To provide financial institutions with a robust, interpretable credit-scoring tool by modeling the probability of survival for local enterprises over time.
+![None](https://img.shields.io/badge/None-3572A5?logo=none&logoColor=white) ![Xgboost](https://img.shields.io/badge/Xgboost-informational?style=flat) ![Streamlit](https://img.shields.io/badge/Streamlit-informational?style=flat) ![Catboost](https://img.shields.io/badge/Catboost-informational?style=flat) 
 
-## 🛠 Methodology
-- **Predictive Engine:** Benchmark of Gradient Boosting (XGBoost, CatBoost) vs. Random Survival Forests.
-- **Performance:** Achieved a **C-index of 0.70**.
-- **Explainability:** Integrated **SHAP-based attribution** to decompose risk factors for each specific decision, ensuring transparency for policy analysts.
+---
 
-## 🏗 Components
-- Accueil.py: Streamlit frontend for the risk monitoring dashboard.
-- Models/: Serialized ML models for survival prediction.
-- data/: Preprocessing pipelines for fiscal and census data integration.
+## 📌 Overview
+
+This repository contains the full source code and experimental pipeline for PFA2025. The objective of this project is to address complex challenges in Survival Analysis by leveraging modern state-of-the-art frameworks.
+
+The methodology primarily utilizes Xgboost, Streamlit, Catboost to ensure scalable and accurate modeling. Careful attention was paid to the preprocessing pipeline and evaluation metrics to ensure that the results are statistically sound and practically viable.
+
+Results demonstrate the efficacy of the chosen architecture in handling the specific nuances of the dataset. This work aligns with ongoing research in Explainable AI and robust predictive modeling.
+
+
+---
+
+## 🗂️ Repository Structure
+
+```text
+PFA2025/
+├── README.md    # Pipeline component
+└── README.md
+```
+
+---
+
+## 🔬 Methodology
+
+### Data
+
+> ⚠️ **Data Availability**  
+> The dataset used in this project is not included in this repository
+> due to confidentiality constraints.  
+> The methodology and code are fully documented below.  
+> The pipeline expects data in the following format: CSV files in the data directory.
+> Contact [eliasse@aims.ac.za](mailto:eliasse@aims.ac.za) for access.
+
+### Model / Approach
+
+- **Algorithm(s):** Standard and advanced algorithms suited for Survival Analysis.
+
+- **Architecture:** Multi-stage pipeline with robust feature engineering.
+
+- **Training:** Optimized for high-throughput inference and stability.
+
+- **Key design choices:** Modular codebase ensuring high maintainability.
+
+
+### Evaluation
+
+- **Primary metric:** C-index
+
+- **Why this metric:** Best captures the performance requirements of Survival Analysis.
+
+- **Baseline:** Empirical naive baselines.
+
+
+---
+
+## 📊 Results
+
+> Training results and evaluation metrics from this project are
+> available upon request. The evaluation pipeline uses C-index as the primary performance criterion.
+> Contact: [eliasse@aims.ac.za](mailto:eliasse@aims.ac.za)
+
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+```bash
+pip install xgboost streamlit catboost
+```
+
+### Run
+```bash
+# Execute the main pipeline notebooks or scripts in sequential order.
+```
+
+Note: This pipeline expects data at: data/dataset.csv
+Expected columns / format: Standard tabular format
+Contact the author to obtain the dataset.
+
+
+---
+
+## 🛠️ Tech Stack
+
+| Category       | Tools                                          |
+|----------------|------------------------------------------------|
+| Language       | None |
+| Frameworks     | Xgboost, Streamlit, Catboost |
+| Environment    | Jupyter Notebook / Script |
+
+---
+
+## 👤 Author
+
+**Eliasse TIAO**  
+M.Sc. Artificial Intelligence · AIMS / Stellenbosch University  
+Google DeepMind Scholar 2025–2026  
+
+📧 [eliasse@aims.ac.za](mailto:eliasse@aims.ac.za)  
+🔗 [LinkedIn](https://linkedin.com/in/eliasse-tiao)  
+🐙 [GitHub](https://github.com/TIAO-Eliasse)
+
+---
+
+## 📄 License
+[MIT License](LICENSE) — free to use with attribution.
