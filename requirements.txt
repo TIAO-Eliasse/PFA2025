@@ -1,0 +1,11 @@
+streamlit>=1.25
+pandas
+numpy
+joblib
+scikit-survival
+plotly
+folium
+streamlit-folium
+openpyxl
+xlsxwriter
+gdown
